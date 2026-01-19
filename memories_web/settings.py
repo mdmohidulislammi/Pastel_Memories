@@ -1,6 +1,8 @@
 
 from pathlib import Path
 from decouple import config
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,8 +16,9 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
-ALLOWED_HOSTS = []
+DEBUG = 'RENDER' not in os.environ
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS=['https://pastel_memories.onrender.com']
 
 
 # Application definition
@@ -44,7 +47,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
+      'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
 ROOT_URLCONF = 'memories_web.urls'
@@ -67,14 +71,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'memories_web.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'memories',
-        'USER': 'postgres',
-        'PASSWORD': 'mecp1',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://event_manager_db_9iby_user:xm6OtIUk69ua3fDJ9JW7vNrxcaeJydem@dpg-d559hrv5r7bs73et5c70-a.virginia-postgres.render.com/event_manager_db_9iby',
+        conn_max_age=600
+    )
 }
 
 # Password validation
