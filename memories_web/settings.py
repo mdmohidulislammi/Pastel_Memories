@@ -18,7 +18,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
 DEBUG = 'RENDER' not in os.environ
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS=['https://pastel_memories.onrender.com']
+CSRF_TRUSTED_ORIGINS=['https://pastel-memories.onrender.com']
 
 
 # Application definition
