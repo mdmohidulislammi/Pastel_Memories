@@ -1,0 +1,87 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block home %}
+
+<!-- Hero Section -->
+<section class="pt-28 pb-20 bg-gradient-to-br from-violet-300 via-purple-300 to-fuchsia-300">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <!-- Text -->
+    <div class="space-y-6">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-900 leading-tight">
+        Preserve Your <span class="text-purple-700">Memories</span><br class="hidden sm:block" /> Forever
+      </h1>
+      <p class="text-lg text-purple-800 max-w-xl">
+        ReCollection is your private digital space to save, relive, and protect your personal memories. Accessible only to you — secure, simple, and timeless.
+      </p>
+      {% if not user.is_authenticated %}
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'signUp' %}" class="px-6 py-3 rounded-xl bg-purple-700 text-white font-semibold shadow-lg hover:bg-purple-800 transition cursor-pointer">
+          Get Started
+        </a>
+        <a href="{% url 'signIn' %}" class="cursor-pointer px-6 py-3 rounded-xl border-2 border-purple-700 text-purple-800 font-semibold hover:bg-purple-700 hover:text-white transition">
+          Login
+        </a>
+      </div>
+      {% else %}
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'create-memory'  %}" class="px-6 py-3 rounded-xl bg-purple-700 text-white font-semibold shadow-lg hover:bg-purple-800 transition cursor-pointer">
+          Create Memory
+        </a>
+        <a href="{% url 'read-memory' %}"  class="cursor-pointer px-6 py-3 rounded-xl border-2 border-purple-700 text-purple-800 font-semibold hover:bg-purple-700 hover:text-white transition">
+          See Your Memories
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Image / Illustration -->
+    <div class="flex justify-center">
+      <img src="{% static 'images/logo.png' %}" alt="Memory illustration" class="w-full max-w-md drop-shadow-2xl" />
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-violet-200">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-purple-900 mb-12">
+      Why Choose ReCollection?
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Card -->
+      <div class="bg-white rounded-2xl p-6 shadow-xl hover:scale-105 transition">
+        <h3 class="text-xl font-semibold text-purple-800 mb-2">🔐 Private & Secure</h3>
+        <p class="text-gray-600">Your memories are visible only to you. Protected with secure authentication.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow-xl hover:scale-105 transition">
+        <h3 class="text-xl font-semibold text-purple-800 mb-2">📝 Easy to Save</h3>
+        <p class="text-gray-600">Write, edit, and organize memories effortlessly with a clean interface.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow-xl hover:scale-105 transition">
+        <h3 class="text-xl font-semibold text-purple-800 mb-2">📱 Fully Responsive</h3>
+        <p class="text-gray-600">Access your memories anytime from mobile, tablet, or desktop devices.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call To Action -->
+<section class="py-20 bg-purple-300">
+  <div class="max-w-4xl mx-auto text-center px-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
+      Start Your Memory Journey Today
+    </h2>
+    <p class="text-lg text-purple-800 mb-8">
+      Create your account and begin storing moments that matter most.
+    </p>
+    {% comment %} <a  class="inline-block px-8 py-4 bg-purple-700 text-white rounded-2xl font-semibold shadow-xl hover:bg-purple-800 transition cursor-pointer">
+      Create Free Account
+    </a> {% endcomment %}
+  </div>
+</section>
+
+{% endblock home %}

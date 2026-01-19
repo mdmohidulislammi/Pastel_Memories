@@ -1,0 +1,136 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block home %}
+
+{% if messages %}
+<div class="max-w-7xl mx-auto px-4 mt-4 space-y-3" id='mess'>
+  {% for message in messages %}
+  <div class="px-4 py-3 rounded-lg text-sm font-medium
+      {% if message.tags == 'error' %}
+        bg-red-500/20 text-red-500 border border-red-500/30
+      {% elif message.tags == 'warning' %}
+        bg-yellow-500/20 text-yellow-400 border border-yellow-500/30
+      {% else %}
+        bg-blue-500/20 text-blue-600 border border-blue-500/30
+      {% endif %}
+  ">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Memories Page -->
+<section class="pt-28 pb-20 bg-violet-200 min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+
+    <!-- Header + Add Memory -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 gap-4">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-purple-900">
+          Your Memories
+        </h1>
+        <p class="text-purple-800 mt-2">
+          All your saved moments, visible only to you.
+        </p>
+      </div>
+
+      <!-- Add Memory Button -->
+      <a href="{% url 'create-memory' %}"
+         class="inline-flex items-center justify-center
+                bg-purple-700 hover:bg-purple-800
+                text-white font-semibold
+                px-6 py-3 rounded-xl
+                transition shadow-md
+                w-full sm:w-auto text-center">
+        + Add Memory
+      </a>
+    </div>
+
+    <!-- Memories List -->
+    <div class="space-y-6">
+
+      {% for memory in memories %}
+      <!-- Single Memory Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-5 sm:p-6 hover:shadow-xl transition">
+
+        <!-- Date & Time -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between
+                    mb-3 text-sm text-gray-500 gap-1">
+          <span>{{ memory.created_at|date:"F d, Y" }}</span>
+          <span>{{ memory.created_at|time:"h:i A" }}</span>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-xl font-semibold text-purple-800 mb-4 break-words">
+          {{ memory.title }}
+        </h2>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-end">
+           
+           <!-- Details memory -->
+             <a href="{% url 'individual-memory' id=memory.id %}"
+             class="w-full sm:w-auto
+                    text-center
+                    px-5 py-2 rounded-lg
+                    border border-green-600
+                    text-green-700 font-medium
+                    hover:bg-green-500 transition">
+            Details
+          </a>
+
+          <!-- Edit -->
+          <a href="{% url 'update-memory' id=memory.id %}"
+             class="w-full sm:w-auto
+                    text-center
+                    px-5 py-2 rounded-lg
+                    border border-purple-600
+                    text-purple-700 font-medium
+                    hover:bg-purple-50 transition cursor-pointer">
+            Edit
+          </a>
+
+          <!-- Delete -->
+           
+          <form method="POST"
+                action="{% url 'delete-memory' memory.id %}"
+                onsubmit="return confirm('Are you sure you want to delete this memory?');"
+                class="w-full sm:w-auto">
+            {% csrf_token %}
+            <button type="submit"
+                    class="w-full sm:w-auto
+                           px-5 py-2 rounded-lg
+                           bg-red-600 hover:bg-red-700
+                           text-white font-medium transition">
+              Delete
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+      {% empty %}
+      <!-- Empty State -->
+      <div class="text-center bg-white rounded-2xl shadow-md p-10">
+        <h2 class="text-2xl font-semibold text-purple-800 mb-2">
+          No Memories Yet
+        </h2>
+        <p class="text-gray-600 mb-6">
+          Start writing your first memory and it will appear here.
+        </p>
+        <a href="{% url 'create-memory' %}"
+           class="inline-block bg-purple-700 hover:bg-purple-800
+                  text-white font-semibold
+                  px-6 py-3 rounded-xl transition">
+          Create Your First Memory
+        </a>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock home %}

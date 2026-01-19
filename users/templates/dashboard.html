@@ -1,0 +1,80 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block home %}
+
+<!-- User Dashboard -->
+<section class="pt-28 pb-20 bg-violet-200 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+    <!-- Dashboard Header -->
+    <div class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-purple-900">Dashboard</h1>
+      <p class="text-purple-800 mt-2">Manage your account and personal settings.</p>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Stats (No Posts Shown) -->
+      <div class="bg-white rounded-3xl shadow-xl p-6">
+        <h2 class="text-xl font-semibold text-purple-800 mb-2">Account Info</h2>
+        <ul class="text-gray-700 space-y-2">
+           {% if user.first_name or user.last_name %}
+           <li><span class="font-medium">Username:</span> {{ request.user.first_name }} {{user.last_name}} </li>
+
+           {% else %}
+           <li><span class="font-medium">Username:</span> {{user.username}} </li>
+           {% endif %}
+          <li><span class="font-medium">Email:</span> {{ request.user.email }}</li>
+          <li><span class="font-medium">Joined:</span> {{ request.user.date_joined|date:"F d, Y" }}</li>
+        </ul>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="bg-white rounded-3xl shadow-xl p-6">
+        <h2 class="text-xl font-semibold text-purple-800 mb-4">Profile</h2>
+        <p class="text-gray-600 mb-4">Update your personal information and profile settings.</p>
+        <a href="{% url 'update-user' user.id %}" class="inline-block px-5 py-2 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-700 transition">
+          Edit Profile
+        </a>
+      </div>
+
+      <!-- Account Security -->
+      {% comment %} <div class="bg-white rounded-3xl shadow-xl p-6">
+        <h2 class="text-xl font-semibold text-purple-800 mb-4">Security</h2>
+        <p class="text-gray-600 mb-4">Change your password and manage account security.</p>
+        <a href="#" class="inline-block px-5 py-2 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-700 transition">
+          Change Password
+        </a>
+      </div> {% endcomment %}
+
+      <!-- Account Settings -->
+      {% comment %} <div class="bg-white rounded-3xl shadow-xl p-6">
+        <h2 class="text-xl font-semibold text-purple-800 mb-4">Settings</h2>
+        <p class="text-gray-600 mb-4">Control preferences and notification settings.</p>
+        <a href="#" class="inline-block px-5 py-2 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-700 transition">
+          Account Settings
+        </a>
+      </div> {% endcomment %}
+
+      
+
+      <!-- Danger Zone -->
+<div class="bg-white rounded-3xl shadow-xl p-6 border border-red-200">
+  <h2 class="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
+  <p class="text-gray-600 mb-4">Delete or deactivate your account permanently.</p>
+
+  <form method="POST" action="{% url 'delete-user' user.id %}" onsubmit="return confirmDelete()">
+    {% csrf_token %}
+    <button type="submit" class="px-5 py-2 rounded-xl bg-red-600 text-white font-medium hover:bg-red-700 transition">
+      Delete Account
+    </button>
+  </form>
+</div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock home %}

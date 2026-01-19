@@ -1,0 +1,77 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block manager_dashboard %}
+
+<!-- Manager Dashboard -->
+<section class="pt-28 pb-20 bg-violet-200 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+    <!-- Header -->
+    <div class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-purple-900">User Management Dashboard</h1>
+      <p class="text-purple-800 mt-2">Add, update, or remove users. User memories are hidden.</p>
+    </div>
+
+    <!-- Add User Button -->
+    <div class="mb-6 flex justify-end">
+      <a href="{% url 'signUp' %}" class="px-6 py-3 bg-purple-700 text-white rounded-xl font-semibold hover:bg-purple-800 transition cursor-pointer">
+        + Add New User
+      </a>
+    </div>
+     <div class="bg-white md:w-1/2 sm:w-full  m-4 rounded-3xl shadow-xl p-6">
+        <h2 class="text-xl font-semibold text-purple-800 mb-2">Account Info</h2>
+        <ul class="text-gray-700 space-y-2">
+          {% if user.first_name or user.last_name %}
+           <li><span class="font-medium">Username:</span> {{ request.user.first_name  }} {{user.last_name}} </li>
+           {% else %}
+           <li><span class="font-medium">Username:</span> {{user.username | upper}} </li>
+           {% endif %}
+          <li><span class="font-medium">Email:</span> {{ request.user.email }}</li>
+          <li><span class="font-medium">Joined:</span> {{ request.user.date_joined|date:"F d, Y" }}</li>
+        </ul>
+      </div>
+
+    <!-- Users Table -->
+    <div class="overflow-x-auto bg-white rounded-3xl shadow-xl">
+      <table class="min-w-full text-sm">
+        <thead class="bg-purple-100 text-purple-900">
+          <tr>
+            <th class="px-6 py-4 text-left">Username</th>
+            <th class="px-6 py-4 text-left">Full Name</th>
+            <th class="px-6 py-4 text-left">Email</th>
+            <th class="px-6 py-4 text-left">Joined</th>
+            <th class="px-6 py-4 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+
+          {% for user in users %}
+          <tr class="hover:bg-purple-50">
+            <td class="px-6 py-4 font-medium">{{ user.username }}</td>
+            <td class="px-6 py-4">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="px-6 py-4">{{ user.email }}</td>
+            <td class="px-6 py-4">{{ user.date_joined|date:"M d, Y" }}</td>
+            <td class="px-6 py-4 flex justify-center gap-3">
+              <a href="{% url 'update-user' user.id %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Edit
+              </a>
+              <a href="{% url 'delete-user' id=user.id %}" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                Delete
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center py-10 text-gray-600">No users found.</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+{% endblock manager_dashboard %}
